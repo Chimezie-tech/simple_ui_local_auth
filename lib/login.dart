@@ -1,8 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/navbar.dart';
 import 'package:my_app/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final getname = TextEditingController();
+  final getpassword = TextEditingController();
+
+  Future<bool> loginUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedusername = prefs.getString('username');
+    String? storedpassword = prefs.getString('password');
+
+    return getname.text == storedusername && getpassword.text == storedpassword;
+  }
+
+  void login() {
+    loginUser().then((isLoggedIn) {
+      if (isLoggedIn) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NavBar()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid Username or Password'),
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +75,15 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: [
                   TextField(
+                    controller: getname,
                     decoration: InputDecoration(
                       labelText: 'Username',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   SizedBox(height: 16),
-                  const TextField(
+                  TextField(
+                    controller: getpassword,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
@@ -54,11 +92,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 16),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      );
-                      print("I was tapped");
+                      login();
                     },
                     child: Container(
                       width: 350,
@@ -73,7 +107,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          'SignUp',
+                          'Login',
                           style: TextStyle(
                               fontSize: 20,
                               color: Colors.grey,

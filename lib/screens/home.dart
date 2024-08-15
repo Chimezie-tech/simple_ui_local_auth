@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/login.dart';
 import 'package:my_app/transfer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +11,32 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String? username;
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    loaduserdata();
+  }
+
+  Future<void> loaduserdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('calling and updating ui ');
+    setState(() {
+      username = prefs.getString('username');
+      email = prefs.getString('email');
+    });
+  }
+
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +45,8 @@ class _HomeState extends State<Home> {
         // leading: Text(''),
         backgroundColor: Colors.blue,
         elevation: 1,
-        title: const Text(
-          'John Home',
+        title: Text(
+          username ?? 'User',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -28,8 +55,7 @@ class _HomeState extends State<Home> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+              logout();
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),

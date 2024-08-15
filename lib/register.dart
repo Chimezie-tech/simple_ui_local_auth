@@ -1,11 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/login.dart';
 import 'package:my_app/navbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
 
-  final emailController = TextEditingController();
-  final usernamecontroller = TextEditingController();
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final getuseremail = TextEditingController();
+
+  final getusername = TextEditingController();
+
+  final getuserpassword = TextEditingController();
+
+  Future<void> registerUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', getuseremail.text);
+    await prefs.setString('username', getusername.text);
+    await prefs.setString('password', getuserpassword.text);
+  }
+
+  void _savedetails() {
+    registerUser().then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration Succesful!'),
+          duration: Duration(seconds: 5),
+        ),
+      );
+      Future.delayed(Duration(seconds: 4), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +87,7 @@ class RegisterPage extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
-                  controller: usernamecontroller,
+                  controller: getusername,
                   decoration: InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
@@ -60,14 +95,15 @@ class RegisterPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 TextField(
-                  controller: emailController,
+                  controller: getuseremail,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                 ),
                 SizedBox(height: 16),
-                const TextField(
+                TextField(
+                  controller: getuserpassword,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
@@ -76,15 +112,7 @@ class RegisterPage extends StatelessWidget {
                 SizedBox(height: 16),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NavBar()),
-                    );
-                    // final email = emailController.text.trim();
-                    // final username = usernamecontroller.text.trim();
-                    // print("this is the email: $email");
-                    // print("this is the username: $username");
+                    _savedetails();
                   },
                   child: Container(
                     width: 350,
