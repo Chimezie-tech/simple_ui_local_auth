@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_app/login.dart';
 import 'package:my_app/navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final getuseremail = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  var getuseremail = TextEditingController();
 
   final getusername = TextEditingController();
 
@@ -84,69 +87,121 @@ class _RegisterPageState extends State<RegisterPage> {
         body: Padding(
           padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
           child: Center(
-            child: Column(
-              children: [
-                TextField(
-                  controller: getusername,
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: getusername,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'please enter username';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: getuseremail,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  // TextField(
+                  //   controller: getusername,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Username',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: getuseremail,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'please enter email';
+                      }
+                      if (!value.contains('@gmail.com')) {
+                        return 'enter a valid email';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: getuserpassword,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  // TextField(
+                  //   controller: getuseremail,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Email',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+
+                  // ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: getuserpassword,
+                    maxLength: 6,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'please enter password';
+                      }
+                      if (value.length < 6) {
+                        return 'password must be at least 6 characters long';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () {
-                    _savedetails();
-                  },
-                  child: Container(
-                    width: 350,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.blue,
-                        width: 1,
+                  // TextField(
+                  //   controller: getuserpassword,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Password',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        _savedetails();
+                      }
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.blue,
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'SignUp',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        'SignUp',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
                   ),
-                ),
-                // Container(
-                //   width: 350,
-                //   height: 40,
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       print('Login clicked');
-                //     },
-                //     child: const Text('Login'),
-                //   ),
-                // )
-              ],
+                  // Container(
+                  //   width: 350,
+                  //   height: 40,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       print('Login clicked');
+                  //     },
+                  //     child: const Text('Login'),
+                  //   ),
+                  // )
+                ],
+              ),
             ),
           ),
         ));
