@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/login.dart';
+import 'package:my_app/sidebar.dart';
 import 'package:my_app/transfer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.circular(10),
               ),
               width: 350,
-              height: 200,
+              height: 290,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -128,6 +129,36 @@ class _HomeState extends State<Home> {
                         child: Center(
                           child: Text(
                             'Save',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SideBar()));
+                      },
+                      child: Container(
+                        width: 350,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.black87,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 2,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Route to sidebar',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
