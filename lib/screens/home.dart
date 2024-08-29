@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/login.dart';
+import 'package:my_app/register.dart';
 import 'package:my_app/transfer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +35,7 @@ class _HomeState extends State<Home> {
     await prefs.clear();
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+        context, MaterialPageRoute(builder: (context) => RegisterPage()));
   }
 
   @override

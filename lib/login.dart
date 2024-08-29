@@ -11,6 +11,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final _formKey = GlobalKey<FormState>();
+
   final getname = TextEditingController();
   final getpassword = TextEditingController();
 
@@ -49,15 +52,15 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            // leading: GestureDetector(
-            //   onTap: () {
-            //     print('This user is not going anywhere');
-            //   },
-            //   child: Icon(
-            //     Icons.arrow,
-            //     color: Colors.white,
-            //   ),
-            // ),
+            leading: GestureDetector(
+              onTap: () {
+                print('This user is not going anywhere');
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+            ),
             backgroundColor: Colors.blue,
             elevation: 1,
             centerTitle: true,
@@ -71,62 +74,81 @@ class _LoginPageState extends State<LoginPage> {
           ),
           body: Padding(
             padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-            child: Center(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: getname,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
+            child: Form(
+              key: _formKey,
+              child: Center(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: getname,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if(value!.isEmpty){
+                          return 'Please enter your username';
+                        }return null;
+                      },
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    controller: getpassword,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
+
+                    SizedBox(height: 16),
+
+                    TextFormField(
+                      controller: getpassword,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if(value!.isEmpty){
+                          return 'Please insert your password';
+                        }
+                        if(value.length < 6){
+                          return 'Password must be at least 6 characters long';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {
-                      login();
-                    },
-                    child: Container(
+                    SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        login();
+                      },
+                      child: Container(
+                        width: 350,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
                       width: 350,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.blue,
-                          width: 1,
-                        ),
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print('Login clicked');
+                        },
+                        child: const Text('Login'),
                       ),
-                      child: Center(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Container(
-                  //   width: 350,
-                  //   height: 40,
-                  //   child: ElevatedButton(
-                  //     onPressed: () {
-                  //       print('Login clicked');
-                  //     },
-                  //     child: const Text('Login'),
-                  //   ),
-                  // )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           )),

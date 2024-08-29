@@ -50,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -77,12 +77,6 @@ class _RegisterPageState extends State<RegisterPage> {
               color: Colors.white,
             ),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Logout'),
-            ),
-          ],
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
