@@ -158,9 +158,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 16),
                   GestureDetector(
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        _savedetails();
-                      }
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NavBar()));
+                      // if (_formKey.currentState!.validate()) {
+                      //   _savedetails();
+                      // }
                     },
                     child: Container(
                       width: 350,
