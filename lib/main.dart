@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/login.dart';
 import 'package:my_app/register.dart';
+import 'package:my_app/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegisterPage(),
+      home: const SplashScreen(),
     );
   }
 }
